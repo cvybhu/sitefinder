@@ -66,7 +66,7 @@ async fn find_name(results_sender: mpsc::Sender<String>) {
         let cur_name: String = Rander::new().get_rand_name();
 
         if !is_name_taken(&(cur_name.clone() + ".com:80")).await {
-            let _ = results_sender.send(cur_name).await.is_err();
+            let _ = results_sender.send(cur_name).await;
         }
     }
 }
