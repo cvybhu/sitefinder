@@ -79,19 +79,16 @@ async fn find_site_names(wanted_names_number: usize, concurrent_dns_lookups: usi
         tokio::spawn(async move { find_name(results_sender).await });
     }
 
-    let mut results: Vec<String> = Vec::new();
-    while let Some(good_name) = results_receiver.recv().await {
-        println!("Found: {}.com", good_name);
-        results.push(good_name);
+    println!("\nResults:");
 
-        if results.len() >= wanted_names_number {
+    let mut found_good_names = 0;
+    while let Some(good_name) = results_receiver.recv().await {
+        println!("{}.com", good_name);
+
+        found_good_names += 1;
+        if found_good_names >= wanted_names_number {
             break;
         }
-    }
-
-    println!("\nResults:");
-    for result in results {
-        println!("{}.com", result);
     }
 }
 
